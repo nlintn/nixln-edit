@@ -4,11 +4,11 @@
   outputs = { self, nixpkgs, systems, ... }:
     let
       eachSystem = nixpkgs.lib.genAttrs (import systems);
-      pkgsFor = eachSystem (system: import nixpkgs { inherit system; overlays = [ self.overlay ]; });
+      pkgsFor = eachSystem (system: import nixpkgs { inherit system; overlays = [ self.overlays.default ]; });
       pname = "nixln-edit";
       version = "0.1.0";
     in {
-      overlay = final: prev: {
+      overlays.default = final: prev: {
         nixln-edit = with final; stdenv.mkDerivation {
           inherit pname version;
           src = ./.;
