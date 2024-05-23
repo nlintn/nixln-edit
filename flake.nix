@@ -1,9 +1,9 @@
 {
   description = "Tool to quickly edit config files symlinked to the nix store, and restore the prior states afterwards";
 
-  outputs = { self, nixpkgs, systems, ... }:
+  outputs = { self, nixpkgs }:
     let
-      eachSystem = nixpkgs.lib.genAttrs (import systems);
+      eachSystem = nixpkgs.lib.genAttrs [ "aarch64-darwin" "aarch64-linux" "x86_64-darwin" "x86_64-linux" ];
       pkgsFor = eachSystem (system: import nixpkgs { inherit system; overlays = [ self.overlays.default ]; });
       pname = "nixln-edit";
       version = "0.1.0";
@@ -43,6 +43,5 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    systems.url = "github:nix-systems/default-linux";
   };
 }
