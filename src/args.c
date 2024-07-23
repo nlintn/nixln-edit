@@ -8,7 +8,7 @@
 
 #include "VERSION.h"
 
-void print_help(char *file_name) {
+static void print_help(const char *file_name) {
     printf("Usage: %s [OPTION]... LINK_NAME\n", file_name == NULL ? "./nixln-edit" : file_name);
     printf("Make quick temporary changes to files which link into e.g. /nix/store");
     printf("\n");
@@ -18,7 +18,7 @@ void print_help(char *file_name) {
     printf(" -v         \t\tdisplay the version number and exit\n");
 }
 
-void print_arg_error(char *file_name, char *error_msg) {
+static void print_arg_error(const char *file_name, const char *error_msg) {
     fprintf(stderr, "%s: %s\n", file_name == NULL ? "nixln-edit" : file_name, error_msg);
     fprintf(stderr, "Try '%s -h' for more information.\n", file_name == NULL ? "nixln-edit" : file_name);
 }

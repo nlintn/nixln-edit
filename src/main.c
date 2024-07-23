@@ -7,18 +7,7 @@
 
 #include "args.h"
 #include "utils.h"
-
-int link_restore(char *dest, char *name) {
-    if (remove(name) == -1) {
-        print_run_error("failed to remove temporary copy of link destination");
-        return 1;
-    }
-    if (symlink(dest, name) == -1) {
-        print_run_error("failed to restore soft link");
-        return 1;
-    }
-    return 0;
-}
+#include "sig_handler.h"
 
 int main(int argc, char **argv) {
     struct args args = parse_args(argc, argv);
@@ -66,10 +55,12 @@ int main(int argc, char **argv) {
         }
         exit(EXIT_FAILURE);
     }
+    
+    sig_h_setup(ln_dest_buf, args.link_name);
 
     char ln_buf[256];
     int read_amount;
-    while ((read_amount = read(ln_fd, ln_buf, 256)) > 0) {
+    while ((read_amount = read(ln_fd, ln_buf, sizeof(ln_buf))) > 0) {
         // TODO: account for partial writes
         if (write(new_fd, ln_buf, read_amount) == -1) {
             print_run_error("failed to set up temporary copy of link destination to edit");
