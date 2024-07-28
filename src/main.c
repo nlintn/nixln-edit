@@ -35,8 +35,14 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
     ln_dest_buf[ret] = '\0';
+    
+    int dir_fd = open(get_directory_of(args.link_name), O_DIRECTORY);
+    if (dir_fd == -1) {
+        print_run_error("failed to open directory of link");
+        exit(EXIT_FAILURE);
+    }
 
-    int ln_fd = open(ln_dest_buf, O_RDONLY);
+    int ln_fd = openat(dir_fd, ln_dest_buf, O_RDONLY);
     if (ln_fd == -1) {
         print_run_error("failed to open link destination for reading");
         exit(EXIT_FAILURE);
