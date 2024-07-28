@@ -21,9 +21,8 @@ int main(int argc, char **argv) {
 
     int ret = readlink(args.link_name, ln_dest_buf, n);
     while (ret == n) {
-        free(ln_dest_buf);
         n += 10;
-        ln_dest_buf = malloc(n);
+        ln_dest_buf = realloc(ln_dest_buf, n);
         if (ln_dest_buf == NULL) {
             print_run_error("failed to allocate memory");
             exit(EXIT_FAILURE);
@@ -31,7 +30,7 @@ int main(int argc, char **argv) {
         ret = readlink(args.link_name, ln_dest_buf, n);
     }
     if (ret == -1) {
-        print_run_error("failed to read link target");
+        print_run_error("failed to read link");
         exit(EXIT_FAILURE);
     }
     ln_dest_buf[ret] = '\0';
@@ -53,7 +52,8 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
 
-    int new_fd = creat(args.link_name, 0777);
+    // write permission for group and other not needed
+    int new_fd = creat(args.link_name, S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
     if (new_fd == -1) {
         print_run_error("failed to create temporary file");
         if (symlink(ln_dest_buf, args.link_name) == -1) {
