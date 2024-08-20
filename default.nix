@@ -14,8 +14,8 @@ in stdenv.mkDerivation {
     echo \#define NAME \"${pname}\" > ./src/VERSION.h
     echo \#define VERSION \"${version}\" >> ./src/VERSION.h
     cd build
-    cmake ..
-    make
+    cmake -DCMAKE_BUILD_TYPE=Release ..
+    cmake --build .
   '';
   installPhase = ''
     mkdir -p $out/bin

@@ -26,7 +26,7 @@ git clone https://github.com/nlintn/nixln-edit.git
 cd nixln-edit
 mkdir build
 cd build
-cmake -G "Unix Makefiles" ..
-make
+cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake --build .
 ```
 The `nixln-edit` binary will now be available in `nixln-edit/build/src/nixln-edit`.
