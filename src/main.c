@@ -4,6 +4,7 @@
 #include <sys/file.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 
 #include "args.h"
 #include "utils.h"
@@ -14,8 +15,14 @@ int main(int argc, char **argv) {
    
     int n = 20;
     char *ln_dest_buf = malloc(n);
-    if (ln_dest_buf == NULL) {
-        print_run_error("failed to allocate memory");
+    check_malloc(ln_dest_buf);
+
+    struct stat sb;
+    if (lstat(args.link_name, &sb) == -1) {
+        print_run_error_exit("failed to read file stats");
+    }
+    if (!S_ISLNK(sb.st_mode)) {
+        fprintf(stderr, "Error: file is not a symbolic link\n");
         exit(EXIT_FAILURE);
     }
 
@@ -23,33 +30,26 @@ int main(int argc, char **argv) {
     while (ret == n) {
         n += 10;
         ln_dest_buf = realloc(ln_dest_buf, n);
-        if (ln_dest_buf == NULL) {
-            print_run_error("failed to allocate memory");
-            exit(EXIT_FAILURE);
-        }
+        check_malloc(ln_dest_buf);
         ret = readlink(args.link_name, ln_dest_buf, n);
     }
     if (ret == -1) {
-        print_run_error("failed to read link");
-        exit(EXIT_FAILURE);
+        print_run_error_exit("failed to read link");
     }
     ln_dest_buf[ret] = '\0';
-    
+
     int dir_fd = open(get_directory_of(args.link_name), O_DIRECTORY);
     if (dir_fd == -1) {
-        print_run_error("failed to open directory of link");
-        exit(EXIT_FAILURE);
+        print_run_error_exit("failed to open directory of link");
     }
 
     int ln_fd = openat(dir_fd, ln_dest_buf, O_RDONLY);
     if (ln_fd == -1) {
-        print_run_error("failed to open link destination for reading");
-        exit(EXIT_FAILURE);
+        print_run_error_exit("failed to open link destination for reading");
     }
 
     if (remove(args.link_name) == -1) {
-        print_run_error("failed to remove link");
-        exit(EXIT_FAILURE);
+        print_run_error_exit("failed to remove link");
     }
 
     // write permission for group and other not needed
@@ -89,8 +89,8 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
     if (pid == 0) {
-        char *ed_args[] = { "/bin/sh", args.editor, args.link_name, NULL };
-        if (execv("/bin/sh", ed_args) == -1) {
+        char *ed_args[] = { args.editor, "--", args.link_name, NULL };
+        if (execvp(args.editor, ed_args) == -1) {
             print_run_error("failed to execute editor");
             (void) link_restore(ln_dest_buf, args.link_name);
             exit(EXIT_FAILURE);

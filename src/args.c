@@ -34,10 +34,7 @@ struct args parse_args(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
     ret.self = malloc(strlen(argv[0]) + 1);
-    if (ret.self == NULL) {
-        print_run_error("failed to allocate memory");
-        exit(EXIT_FAILURE);
-    }
+    check_malloc(ret.self);
     strcpy(ret.self, argv[0]);
 
     for (int i = 1; i < argc; i++) {
@@ -46,10 +43,7 @@ struct args parse_args(int argc, char **argv) {
         }
         if (argv[i][0] != '-') {
             ret.link_name = malloc(strlen(argv[i]) + 1);
-            if (ret.link_name == NULL) {
-                print_run_error("failed to allocate memory");
-                exit(EXIT_FAILURE);
-            }
+            check_malloc(ret.link_name);
             strcpy(ret.link_name, argv[i]);
             continue;
         }
@@ -60,10 +54,7 @@ struct args parse_args(int argc, char **argv) {
                     exit(EXIT_FAILURE);
                 }
                 ret.editor = malloc(strlen(argv[i + 1]) + 1);
-                if (ret.editor == NULL) {
-                    print_run_error("failed to allocate memory");
-                    exit(EXIT_FAILURE);
-                }
+                check_malloc(ret.editor);
                 strcpy(ret.editor, argv[i + 1]);
                 i += 1;
             break;
@@ -94,10 +85,7 @@ struct args parse_args(int argc, char **argv) {
             exit(EXIT_FAILURE);
         }
         ret.editor = malloc(strlen(ed_env) + 1);
-        if (ret.editor == NULL) {
-            print_run_error("failed to allocate memory");
-            exit(EXIT_FAILURE);
-        }
+        check_malloc(ret.editor);
         strcpy(ret.editor, ed_env);
     }
 

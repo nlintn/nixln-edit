@@ -3,7 +3,7 @@
 
   outputs = { self, nixpkgs }:
     let
-      eachSystem = nixpkgs.lib.genAttrs [ "aarch64-darwin" "aarch64-linux" "x86_64-darwin" "x86_64-linux" ];
+      eachSystem = nixpkgs.lib.genAttrs (builtins.attrNames nixpkgs.legacyPackages);
       pkgsFor = eachSystem (system: import nixpkgs { inherit system; });
     in {
       packages = eachSystem (system: {
@@ -12,14 +12,11 @@
       });
 
       devShells = eachSystem (system: {
-        default =
-          pkgsFor.${system}.mkShell {
-            nativeBuildInputs = with pkgsFor.${system}; [ cmake clang-tools_17 ];
-          };
+        default = import ./shell.nix { pkgs = pkgsFor.${system}; };
       });
     };
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "nixpkgs";
   };
 }
