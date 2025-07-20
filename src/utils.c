@@ -1,14 +1,6 @@
 #include "utils.h"
 
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
-
-void print_run_error(const char *error_msg) {
-    fprintf(stderr, "Error: %s - %s\n", error_msg, strerror(errno));
-}
 
 char *get_directory_of(const char *file_path) {
     int found = 0;
@@ -24,10 +16,7 @@ char *get_directory_of(const char *file_path) {
     }
 
     char *buf = malloc(i + 1);
-    if (buf == NULL) {
-        print_run_error("failed to allocate memory");
-        exit(EXIT_FAILURE);
-    }
+    check_malloc(buf);
     if (found) {
         memcpy(buf, file_path, i);
     } else {
