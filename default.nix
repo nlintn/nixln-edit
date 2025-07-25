@@ -1,5 +1,6 @@
-{ stdenv
-, cmake
+{ cmake
+, lib
+, stdenv
 }:
 
 let
@@ -21,5 +22,11 @@ in stdenv.mkDerivation {
     mkdir -p $out/bin
     cp src/nixln-edit $out/bin/nixln-edit
   '';
+  meta = with lib; {
+    description = "Tool to quickly edit config files symlinked to the nix store, and restore the prior states afterwards";
+    homepage = "https://github.com/nlintn/nixln-edit";
+    license = licenses.mit;
+    mainProgram = "nixln-edit";
+  };
 }
 

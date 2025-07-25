@@ -1,6 +1,4 @@
 {
-  description = "Tool to quickly edit config files symlinked to the nix store, and restore the prior states afterwards";
-
   outputs = { self, nixpkgs }:
     let
       eachSystem = nixpkgs.lib.genAttrs (builtins.attrNames nixpkgs.legacyPackages);
