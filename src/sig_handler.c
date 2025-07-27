@@ -1,7 +1,6 @@
 #include "sig_handler.h"
 
 #include <signal.h>
-#include <stddef.h>
 #include <unistd.h>
 
 #include "utils.h"
