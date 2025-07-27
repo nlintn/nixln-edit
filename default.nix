@@ -5,7 +5,7 @@
 
 let
   pname = "nixln-edit";
-  version = "0.2.0";
+  version = "0.2.1";
 in stdenv.mkDerivation {
   inherit pname version;
   src = ./.;

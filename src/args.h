@@ -1,8 +1,8 @@
 struct args {
     char *editor;
-    char **link_paths;
+    char *const *link_paths;
     int link_count;
 };
 
-struct args parse_args(int argc, const char *const *argv);
+struct args parse_args(int argc, char *const *argv);
 

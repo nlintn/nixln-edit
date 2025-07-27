@@ -12,7 +12,7 @@
 #include "sig_handler.h"
 
 int main(int argc, char **argv) {
-    struct args args = parse_args(argc, (const char *const *) argv);
+    struct args args = parse_args(argc, argv);
 
     char **ln_dest_bufs = calloc(args.link_count, sizeof(char *));
     int i = 0;
@@ -115,7 +115,6 @@ int main(int argc, char **argv) {
     if (waitpid(pid, NULL, 0) == -1) {
         print_run_error("failed to yield editor process", args.editor);
     }
-    free(args.editor);
 
     return link_restore(args.link_count, (const char *const *) ln_dest_bufs, (const char *const *) args.link_paths);
 }
