@@ -18,9 +18,9 @@ static void sig_handler(int sig) {
 
 // Catch every Signal with default action 'Term' or 'Core' (except 'SIGKILL', because not catchable)
 static const int sigs[] = {
-    SIGABRT, SIGALRM, SIGBUS, SIGFPE, SIGHUP, SIGILL, SIGINT, SIGIO,
-    SIGPIPE, SIGPOLL, SIGPROF, SIGPWR, SIGQUIT, SIGSEGV, SIGSYS,
-    SIGTERM, SIGTRAP, SIGUSR1, SIGUSR2, SIGVTALRM, SIGXCPU, SIGXFSZ,
+    SIGABRT, SIGALRM, SIGBUS, SIGFPE, SIGHUP, SIGILL, SIGINT,
+    SIGPIPE, SIGPROF, SIGQUIT, SIGSEGV, SIGSYS, SIGTERM,
+    SIGTRAP, SIGUSR1, SIGUSR2, SIGVTALRM, SIGXCPU, SIGXFSZ,
 };
 void sig_h_setup(const int* i, const char *const *link_dest, const char *const *link_name) {
     _i = i;
