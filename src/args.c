@@ -61,7 +61,7 @@ struct args parse_args(int argc, char *const *argv) {
     }
 
     if (optind == argc) {
-        print_arg_error(self, "missing link operand(s)"); 
+        print_arg_error(self, "missing link operand(s)");
     }
     ret.link_count = argc - optind;
     ret.link_paths = argv + optind;
@@ -76,4 +76,3 @@ struct args parse_args(int argc, char *const *argv) {
 
     return ret;
 }
-

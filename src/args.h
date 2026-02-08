@@ -5,4 +5,3 @@ struct args {
 };
 
 struct args parse_args(int argc, char *const *argv);
-

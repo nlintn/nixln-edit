@@ -1,12 +1,14 @@
 {
-  outputs = { self, nixpkgs }:
+  outputs =
+    { self, nixpkgs }:
     let
       eachSystem = nixpkgs.lib.genAttrs (builtins.attrNames nixpkgs.legacyPackages);
       pkgsFor = eachSystem (system: import nixpkgs { inherit system; });
-    in {
+    in
+    {
       packages = eachSystem (system: {
         default = self.packages.${system}.nixln-edit;
-        nixln-edit = pkgsFor.${system}.callPackage ./. {};
+        nixln-edit = pkgsFor.${system}.callPackage ./. { };
       });
 
       devShells = eachSystem (system: {

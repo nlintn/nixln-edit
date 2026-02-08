@@ -1,12 +1,14 @@
-{ cmake
-, lib
-, stdenv
+{
+  cmake,
+  lib,
+  stdenv,
 }:
 
 let
   pname = "nixln-edit";
   version = "0.2.2";
-in stdenv.mkDerivation {
+in
+stdenv.mkDerivation {
   inherit pname version;
   src = ./.;
   buildInputs = [ cmake ];
@@ -29,4 +31,3 @@ in stdenv.mkDerivation {
     mainProgram = "nixln-edit";
   };
 }
-

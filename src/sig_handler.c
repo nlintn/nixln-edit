@@ -39,4 +39,3 @@ void sig_h_setup(const int* i, const char *const *link_dest, const char *const *
         }
     }
 }
-

@@ -29,5 +29,3 @@ static inline void check_malloc(const void *ptr) {
         exit(EXIT_FAILURE);
     }
 }
-
-

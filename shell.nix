@@ -1,5 +1,11 @@
-{ pkgs ? import <nixpkgs> {} }:
+{
+  pkgs ? import <nixpkgs> { },
+}:
 
 pkgs.mkShell {
-  nativeBuildInputs = with pkgs; [ cmake clang-tools valgrind ];
+  nativeBuildInputs = with pkgs; [
+    cmake
+    clang-tools
+    valgrind
+  ];
 }

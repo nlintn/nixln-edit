@@ -16,4 +16,3 @@ int link_restore(int path_count, const char *const dests[path_count], const char
     }
     return success;
 }
-

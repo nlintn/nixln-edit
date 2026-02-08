@@ -109,4 +109,3 @@ int main(int argc, char **argv) {
 
     return link_restore(args.link_count, (const char *const *) ln_dest_bufs, (const char *const *) args.link_paths);
 }
-
