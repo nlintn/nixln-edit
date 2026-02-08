@@ -25,7 +25,7 @@ in stdenv.mkDerivation {
   meta = with lib; {
     description = "Tool to quickly edit config files symlinked to the nix store, and restore the prior states afterwards";
     homepage = "https://github.com/nlintn/nixln-edit";
-    license = licenses.mit;
+    license = licenses.eupl12;
     mainProgram = "nixln-edit";
   };
 }
