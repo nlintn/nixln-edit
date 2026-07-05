@@ -31,18 +31,13 @@ int main(int argc, char **argv) {
             exit(EXIT_FAILURE);
         }
 
-        int ret, n = 16;
-        do {
-            n += 16;
-            *ln_dest_buf = realloc(*ln_dest_buf, n);
-            check_malloc(*ln_dest_buf);
-            ret = readlink(link_name, *ln_dest_buf, n);
-
-        } while (ret == n);
-        if (ret == -1) {
+        int ln_dest_len = sb.st_size;
+        *ln_dest_buf = malloc(ln_dest_len + 1);
+        check_malloc(*ln_dest_buf);
+        if (readlink(link_name, *ln_dest_buf, ln_dest_len) != ln_dest_len) {
             print_error_restore_exit("failed to read link", link_name, i, (const char *const *) ln_dest_bufs, (const char *const *) args.link_paths);
         }
-        (*ln_dest_buf)[ret] = '\0';
+        (*ln_dest_buf)[ln_dest_len] = '\0';
 
         char *link_name_copy = malloc(strlen(link_name) + 1);
         check_malloc(link_name_copy);
